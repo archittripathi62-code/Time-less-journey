@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Timeless Journey with a Love</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <div class="site">
+
+    <!-- Floating Music Control -->
+    <div class="music-control">
+      <div style="display:flex;gap:10px;align-items:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="transform:translateY(1px)" xmlns="http://www.w3.org/2000/svg"><path d="M7 17L13 12L7 7V17Z" fill="currentColor"/></svg>
+        <span style="font-weight:600">Play music</span>
+      </div>
+      <button id="musicToggle">▶</button>
+    </div>
+
+    <!-- Cover Section -->
+    <header class="cover" id="cover">
+      <div class="card" data-aos="zoom-in">
+        <h1 class="title">Timeless Journey with a Love</h1>
+        <p class="subtitle">A scrapbook of moments, memories, and quiet promises. Press start — the music will follow.</p>
+        <button class="start-btn" id="startBtn">Start the Journey</button>
+        <div class="muted-note">Music: Taylor Swift – Lover (Instrumental)</div>
+      </div>
+    </header>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop preload="auto">
+      <source src="music/lover.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Chapters (Memories) -->
+    <main>
+      <section class="chapter" id="ch1">
+        <div class="photo" data-aos="fade-right"><img src="images/first_meet.jpg" alt="First Meet" /></div>
+        <div class="text" data-aos="fade-left">
+          <span class="chapter-number">1</span>
+          <h2>First Meet</h2>
+          <p class="typed">I still remember that day — the way the light hit your hair and the little laugh you couldn't hide. It felt like our first page turning.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="ch2">
+        <div class="text" data-aos="fade-right">
+          <span class="chapter-number">2</span>
+          <h2>First Date</h2>
+          <p>Our first date — nervous smiles, too much coffee, and the world narrowing into just the two of us. I loved every second of it.</p>
+        </div>
+        <div class="photo" data-aos="fade-left"><img src="images/first_date.jpg" alt="First Date" /></div>
+      </section>
+
+      <section class="chapter" id="ch3">
+        <div class="photo" data-aos="fade-right"><img src="images/first_cry.jpg" alt="First Cry" /></div>
+        <div class="text" data-aos="fade-left">
+          <span class="chapter-number">3</span>
+          <h2>First Crying Together</h2>
+          <div class="emotional">
+            <p>We were both fragile that evening — tears, honest words, and the kind of holding that feels like a promise. That moment built the foundation of trust I lean on every day.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="ch4">
+        <div class="text" data-aos="fade-right">
+          <span class="chapter-number">4</span>
+          <h2>First Trip</h2>
+          <p>Sunsets, wrong turns that became the best adventures, and tiny souvenirs we still keep. Travel with you is home.</p>
+        </div>
+        <div class="photo" data-aos="fade-left"><img src="images/first_trip.jpg" alt="First Trip" /></div>
+      </section>
+
+      <section class="chapter" id="ch5">
+        <div class="photo" data-aos="fade-right"><img src="images/late_night.jpg" alt="Late Night Walk" /></div>
+        <div class="text" data-aos="fade-left">
+          <span class="chapter-number">5</span>
+          <h2>Our Late Night Walking</h2>
+          <p>Those quiet walks where we shared secrets and watched the town sleep — I kept time by the warmth of your hand in mine.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="ch6">
+        <div class="text" data-aos="fade-right">
+          <span class="chapter-number">6</span>
+          <h2>My Birthday Gifts</h2>
+          <p>I loved how you make birthdays special — the small surprises, the thought in every ribbon. I hope today I give you that same joy.</p>
+        </div>
+        <div class="photo" data-aos="fade-left"><img src="images/bday_gifts.jpg" alt="Birthday Gifts" /></div>
+      </section>
+
+      <section class="chapter" id="ch7">
+        <div class="photo" data-aos="fade-right"><img src="images/support.jpg" alt="Support" /></div>
+        <div class="text" data-aos="fade-left">
+          <span class="chapter-number">7</span>
+          <h2>The Beautiful Support</h2>
+          <p>When the world felt heavy, you were my shelter. Thank you for believing in me when I couldn't.</p>
+        </div>
+      </section>
+
+      <section class="final" id="ch8" data-aos="zoom-in">
+        <h2 style="font-family:'Playfair Display';font-size:36px;margin:0">HAPPY BIRTHDAY</h2>
+        <p style="font-size:20px;margin:12px 0 0;color:#9b7b81">To the one who reads my pages and rides my roads — here's to a beautiful future together.</p>
+        <div class="ferrari-track">
+          <svg class="car" id="car" viewBox="0 0 512 256" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="160" width="512" height="24" fill="#222" rx="12" opacity="0.05"/>
+            <path d="M54 160c22-36 60-64 120-64h180c48 0 68 24 88 64" fill="#e43b5a"/>
+            <circle cx="140" cy="192" r="22" fill="#111"/>
+            <circle cx="360" cy="192" r="22" fill="#111"/>
+          </svg>
+        </div>
+        <button class="start-btn" id="replayBtn" style="margin-top:18px">Play Celebration</button>
+        <canvas class="confetti-canvas" id="confetti"></canvas>
+      </section>
+    </main>
+
+    <footer style="text-align:center;padding:28px 0;color:#9b7b81;font-size:13px">
+      Made with ❤️ — Replace images in <code>/images</code> and music in <code>/music/lover.mp3</code>
+    </footer>
+
+  </div>
+
+  <!-- JS Dependencies -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

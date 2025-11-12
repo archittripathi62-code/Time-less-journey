@@ -1,0 +1,22 @@
+:root {
+  --bg:#fff6f8;
+  --accent:#e43b5a;
+  --muted:#9b7b81;
+  --soft:#f6e9ea;
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(180deg,var(--bg),#fff);
+  color: #3a2b2e;
+}
+.cover { height:100vh; display:flex; justify-content:center; align-items:center; background:url('../images/cover-placeholder.jpg') center/cover no-repeat; }
+.cover .card { background:rgba(255,255,255,0.9); padding:48px; border-radius:18px; text-align:center; }
+.title { font-family:"Playfair Display"; font-size:44px; margin-bottom:10px; }
+.subtitle { color:var(--muted); margin-bottom:22px; }
+.start-btn { background:var(--accent); color:#fff; padding:12px 22px; border:0; border-radius:10px; cursor:pointer; font-weight:600; }
+.music-control { position:fixed; right:18px; top:18px; background:#fff; padding:8px 12px; border-radius:999px; box-shadow:0 4px 10px rgba(0,0,0,0.1); display:flex; gap:8px; align-items:center; }
+.chapter { padding:80px 6vw; display:flex; gap:36px; align-items:center; }
+.chapter img { width:100%; border-radius:14px; box-shadow:0 8px 24px rgba(57,24,28,0.06); }
+.final { text-align:center; padding:120px 6vw; position:relative; }

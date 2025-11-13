@@ -5,18 +5,231 @@
   --soft:#f6e9ea;
 }
 
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg,var(--bg),#fff);
-  color: #3a2b2e;
-}
-.cover { height:100vh; display:flex; justify-content:center; align-items:center; background:url('../images/cover-placeholder.jpg') center/cover no-repeat; }
-.cover .card { background:rgba(255,255,255,0.9); padding:48px; border-radius:18px; text-align:center; }
-.title { font-family:"Playfair Display"; font-size:44px; margin-bottom:10px; }
+/* Base */
+* { box-sizing:border-box; }
+html,body { height:100%; margin:0; font-family:"Poppins",sans-serif; background:linear-gradient(180deg,var(--bg),#fff); color:#3a2b2e; }
+
+/* Locked state hides book until Start */
+body.locked { overflow:hidden; }
+body.locked main, body.locked footer, body.locked .topbar { display:none; }
+
+/* Topbar */
+.topbar { position:fixed; inset:0 0 auto 0; height:64px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.95); box-shadow:0 6px 20px rgba(0,0,0,0.04); z-index:99998; }
+.topbar-inner { max-width:1100px; width:100%; padding:0 18px; display:flex; align-items:center; justify-content:center; }
+.top-title { margin:0; font-family:'Playfair Display'; font-size:20px; color:#4a2730; letter-spacing:0.2px; }
+
+/* Cover */
+.cover { height:100vh; display:flex; justify-content:center; align-items:center; background: linear-gradient(135deg, rgba(228,59,90,0.06), rgba(198,155,109,0.03)); }
+.cover .card { background:rgba(255,255,255,0.94); padding:48px; border-radius:18px; text-align:center; max-width:900px; width:92%; box-shadow:0 10px 30px rgba(0,0,0,0.06); }
+.title { font-family:"Playfair Display",serif; font-size:44px; margin:0 0 10px; color:#4a2730; }
 .subtitle { color:var(--muted); margin-bottom:22px; }
 .start-btn { background:var(--accent); color:#fff; padding:12px 22px; border:0; border-radius:10px; cursor:pointer; font-weight:600; }
-.music-control { position:fixed; right:18px; top:18px; background:#fff; padding:8px 12px; border-radius:999px; box-shadow:0 4px 10px rgba(0,0,0,0.1); display:flex; gap:8px; align-items:center; }
-.chapter { padding:80px 6vw; display:flex; gap:36px; align-items:center; }
-.chapter img { width:100%; border-radius:14px; box-shadow:0 8px 24px rgba(57,24,28,0.06); }
-.final { text-align:center; padding:120px 6vw; position:relative; }
+
+/* Music control (always on top) */
+.music-control { position:fixed; right:18px; top:18px; background:rgba(255,255,255,0.96); padding:8px 12px; border-radius:999px; box-shadow:0 6px 20px rgba(0,0,0,0.08); display:flex; gap:8px; align-items:center; z-index:999999; }
+.music-control button { border:0; background:none; cursor:pointer; font-weight:600; font-size:16px; }
+
+/* Book scene — centered perfectly and lowered a bit below the top title */
+#bookWrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:120px 20px 60px; }
+.book-scene {
+  position: relative;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Page nav arrows */
+.page-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.06);
+  border: 0;
+  width: 62px;
+  height: 62px;
+  border-radius: 999px;
+  font-size: 36px;
+  color: #3a2b2e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s;
+  z-index: 9999;
+}
+.page-nav:hover { transform: translateY(-50%) scale(1.06); box-shadow:0 6px 18px rgba(0,0,0,0.08); }
+
+/* Center arrows around the book */
+.page-nav.left { left: calc(50% - 520px); }
+.page-nav.right { right: calc(50% - 520px); }
+
+/* Responsive arrow placement */
+@media (max-width:1100px) {
+  .page-nav.left { left: 10px; }
+  .page-nav.right { right: 10px; }
+}
+
+/* Book container (bigger now) */
+.book { width:100%; max-width:900px; height:640px; position:relative; perspective:1600px; }
+
+/* Individual pages (3D flip effect) */
+/* NOTE: transition time increased to match slow reveal - 1400ms animation */
+.page {
+  position:absolute; inset:0;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 22px 60px rgba(32,18,20,0.12);
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:26px;
+  transform-origin:center;
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+  transition:transform 1400ms cubic-bezier(.22,.9,.3,1), opacity 1200ms ease;
+}
+
+/* Visible page */
+.page.current {
+  opacity:1;
+  pointer-events:auto;
+  transform:rotateY(0deg) translateZ(0);
+  z-index:20;
+}
+
+/* Neighboring pages */
+.page.prev {
+  opacity:0.85;
+  transform:rotateY(18deg) translateX(-42px) translateZ(-20px) scale(0.986);
+  z-index:10;
+}
+.page.next {
+  opacity:0.85;
+  transform:rotateY(-18deg) translateX(42px) translateZ(-20px) scale(0.986);
+  z-index:10;
+}
+
+/* Curled page edge */
+.page::before{
+  content:"";
+  position:absolute;
+  right:0; top:0; bottom:0;
+  width:42px;
+  background:linear-gradient(90deg, rgba(255,255,255,0), rgba(0,0,0,0.03));
+  transform:skewX(-12deg);
+  pointer-events:none;
+  border-top-right-radius:12px;
+  border-bottom-right-radius:12px;
+  mix-blend-mode:multiply;
+  opacity:0.45;
+}
+
+/* Page content layout */
+.page-inner { 
+  width:100%; 
+  display:flex; 
+  gap:24px; 
+  align-items:center; 
+  justify-content:space-between; 
+  height:100%; 
+}
+.page-inner .photo { 
+  flex:1; 
+  min-height:460px; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  border-radius:10px; 
+  overflow:hidden; 
+  background:#eee; 
+  box-shadow:inset 0 -12px 24px rgba(0,0,0,0.03);
+}
+.page-inner .photo img { 
+  width:100%; 
+  height:100%; 
+  display:block; 
+  object-fit:cover; 
+  object-position:center; 
+}
+
+/* Fix first page image */
+.page[data-index="0"] .photo img { object-fit: contain; }
+
+/* Text side */
+.page-inner .text { flex:1; display:flex; flex-direction:column; gap:12px; padding:8px 2px; }
+.chapter-number { display:inline-block; background:var(--soft); padding:6px 10px; border-radius:999px; font-weight:600; color:var(--accent); margin-bottom:6px; }
+.page-inner h2 { font-family:'Playfair Display',serif; margin:0 0 6px; font-size:26px; color:#3b2327; }
+.page-inner p { margin:0; color:var(--muted); line-height:1.6; }
+
+/* Final page */
+.final-inner { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; text-align:center; }
+.final-inner h2 { font-family:'Playfair Display'; font-size:34px; margin:0; }
+
+/* ===== Final celebration animations ===== */
+
+/* initial hidden/position for the HB title (will animate into view) */
+.hb-title {
+  transform: translateY(-60px);
+  opacity: 0;
+  transition: transform 700ms cubic-bezier(.22,.9,.3,1), opacity 600ms ease;
+  will-change: transform, opacity;
+}
+
+/* visible state for the title after drop */
+.hb-title.show {
+  transform: translateY(0);
+  opacity: 1;
+  transition-duration: 900ms;
+  animation: hb-bounce 900ms cubic-bezier(.22,.9,.3,1);
+}
+
+/* bounce keyframes */
+@keyframes hb-bounce {
+  0% { transform: translateY(-80px); }
+  70% { transform: translateY(6px); }
+  100% { transform: translateY(0); }
+}
+
+/* final message styling (hidden initially) */
+.final-message {
+  margin-top: 18px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  font-size: 20px;
+  color: #5a3136;
+  line-height: 1.4;
+}
+
+/* visible state for final message */
+.final-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* signature style */
+.final-message .signature {
+  margin-top: 8px;
+  font-weight: 600;
+  color: #4a2730;
+}
+
+/* Confetti */
+.confetti-canvas { position:absolute; inset:0; pointer-events:none; z-index:60; }
+
+/* Responsive layout */
+@media (max-width:880px) {
+  .book { max-width:92%; height:720px; }
+  .page-inner { flex-direction:column; }
+  .page-inner .photo { min-height:320px; width:100%; }
+  .page-inner .text { width:100%; }
+  .page-nav { width:48px; height:48px; font-size:28px; }
+  .topbar { height:56px; }
+}

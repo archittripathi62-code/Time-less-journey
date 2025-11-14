@@ -14,7 +14,7 @@ AOS.init({ duration: 700, once: true, easing: 'ease-out-cubic' });
 const PAGE_PRE_DELAY_MS = 600;      // suspense before the flip animation
 const PAGE_ANIM_DURATION_MS = 1400; // must match CSS transition
 const NAV_DISABLE_MS = PAGE_PRE_DELAY_MS + PAGE_ANIM_DURATION_MS + 120;
-
+const homeBtn = document.getElementById('homeBtn');
 /* ---------- DOM ---------- */
 const bg = document.getElementById('bgMusic');
 const flipSound = document.getElementById('flipSound');
@@ -314,6 +314,67 @@ window.addEventListener('resize', () => {
     confCanvas.height = window.innerHeight;
   }
 });
+
+function goHome() {
+  // pause & reset music
+  try {
+    if (bg) {
+      bg.pause();
+      bg.currentTime = 0;
+      musicToggle.textContent = '▶';
+      musicToggle.setAttribute('aria-pressed', 'false');
+    }
+  } catch (e) { console.warn('Error resetting audio', e); }
+
+  // hide book and topbar, show cover
+  const cover = document.getElementById('cover');
+  if (cover) cover.style.display = 'flex';
+
+  if (topbar) {
+    topbar.style.display = 'none';
+    topbar.setAttribute('aria-hidden', 'true');
+  }
+
+  if (bookWrap) {
+    bookWrap.style.display = 'none';
+    bookWrap.setAttribute('aria-hidden', 'true');
+  }
+
+  // lock scrolling & reset state so Start is required again
+  document.body.classList.add('locked');
+
+  // reset pages to first
+  current = 0;
+  navLocked = false;
+  updatePageClasses();
+
+  // reset final celebration elements if present
+  const hb = document.getElementById('hbTitle');
+  const finalMsg = document.getElementById('finalMessage');
+  const canvas = document.getElementById('confetti');
+  if (hb) hb.classList.remove('show');
+  if (finalMsg) {
+    finalMsg.classList.remove('show');
+    finalMsg.setAttribute('aria-hidden', 'true');
+    finalMsg.innerHTML = ''; // clear typed text
+  }
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx && ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // scroll to top (cover)
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// wire the button if present
+if (homeBtn) {
+  homeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    goHome();
+  });
+}
+
 
 // initial paint
 updatePageClasses();

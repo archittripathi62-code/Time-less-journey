@@ -72,6 +72,29 @@ body.locked main, body.locked footer, body.locked .topbar { display:none; }
   .page-nav.right { right: 10px; }
 }
 
+.home-btn {
+  position: absolute;
+  left: 18px;
+  top: 12px;
+  height: 40px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 0;
+  background: rgba(0,0,0,0.04);
+  color: #3a2b2e;
+  font-weight:600;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.04);
+  transition: transform .12s, background .12s;
+  z-index: 99999;
+}
+.home-btn:hover { transform: translateY(-1px); background: rgba(0,0,0,0.06); }
+
+/* mobile: reduce padding and left offset */
+@media (max-width:880px) {
+  .home-btn { left: 10px; top: 8px; height: 36px; padding: 6px 10px; font-size:14px; }
+}
+
 /* Book container (bigger now) */
 .book { width:100%; max-width:900px; height:640px; position:relative; perspective:1600px; }
 
